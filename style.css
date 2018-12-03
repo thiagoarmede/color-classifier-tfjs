@@ -1,0 +1,136 @@
+body {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  font-family: "Montserrat", sans-serif;
+}
+
+code {
+  background: #e3e4e5;
+  border-radius: 2px;
+  padding: 2px;
+}
+
+.card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: grid;
+  grid-gap: 50px;
+  grid-template-columns: 200px 200px 10px auto;
+  grid-template-rows: auto auto;
+}
+
+.btn {
+  background-color: darkblue; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.load-Save {
+  grid-column: 4 / 4;
+  grid-row: 2 / 3;
+}
+
+.color-Picker {
+  grid-column: 2 / 3;
+}
+
+.single-Slider {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px;
+}
+
+.single-Slider p {
+  margin: 0px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#red-slider::-webkit-slider-thumb {
+  background: red;
+}
+
+#red-slider::-moz-slider-thumb {
+  background: red;
+}
+
+#red-slider::-moz-range-progress {
+  background: red;
+}
+
+#green-slider::-webkit-slider-thumb {
+  background: green;
+}
+
+#green-slider::-moz-slider-thumb {
+  background: green;
+}
+
+#blue-slider::-webkit-slider-thumb {
+  background: blue;
+}
+
+#blue-slider::-moz-slider-thumb {
+  background: blue;
+}
+
+.seperator {
+  margin: 0 10px;
+  width: 2px;
+  border-radius: 2px;
+  background: #d3d3d3;
+  grid-column: 3 / 3;
+  grid-row: 1 / 3;
+}
+
+.pred {
+  margin: 10px;
+}
+
+#rgb-Canvas {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
