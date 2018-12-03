@@ -61,7 +61,7 @@ async function loadMd() {
     const optimizer = tf.train.sgd(LEARNING_RATE);
     let item = Number(localStorage.getItem("saveNo"));
     model.compile({
-      model = await tf.loadModel(`indexeddb://colorClassifier-${item}`);
+      model = await tf.loadModel(`indexeddb://colorClassifier-${item}`),
       optimizer: optimizer,
       loss: "categoricalCrossentropy",
       metrics: ["accuracy"]
@@ -85,7 +85,6 @@ async function saveModel() {
 }
 
 function setup() {
-  // Crude interface
   canvas = createCanvas(200, 200);
   graph = document.getElementById("graph");
   labelP = select("#prediction");
@@ -162,6 +161,7 @@ function buildModel() {
     units: 9,
     activation: "softmax"
   });
+
   md.add(hidden);
   md.add(output);
 
@@ -190,17 +190,18 @@ function plotTraining() {
   let loss = {
     x: lossX,
     y: lossY,
-    name: "Val Loss"
+    name: "Perda"
   };
 
   let acc = {
     x: lossX,
     y: accY,
-    name: "Val Accuracy"
+    name: "Precisão"
   };
 
   Plotly.newPlot(graph, [loss, acc], layout);
 }
+
 function draw() {
   let r = rSlider.value();
   let g = gSlider.value();
