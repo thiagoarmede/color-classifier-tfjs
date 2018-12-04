@@ -100,9 +100,11 @@ function setup() {
   labelsTensor.dispose();
 
   model = buildModel();
+  //Methods for loading and saving the color classifier
   saveBtn.mouseClicked(saveModel);
   loadBtn.mouseClicked(loadMd);
 
+  // Method for training the model
   istraining = false;
   trainBtn.mouseClicked(train);
 }
@@ -161,6 +163,20 @@ function buildModel() {
   });
 
   return md;
+}
+
+function plotTraining() {
+  let loss = {
+    x: lossX,
+    y: lossY,
+    name: "Perda"
+  };
+
+  let acc = {
+    x: lossX,
+    y: accY,
+    name: "Precisão"
+  };
 }
 
 function draw() {
