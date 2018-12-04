@@ -147,6 +147,7 @@ function buildModel() {
     units: 9,
     activation: "softmax"
   });
+
   md.add(hidden);
   md.add(output);
 
