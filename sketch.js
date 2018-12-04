@@ -1,14 +1,3 @@
-// Daniel Shiffman
-// Intelligence and Learning
-// The Coding Train
-
-// Full tutorial playlist:
-// https://www.youtube.com/playlist?list=PLRqwX-V7Uu6bmMRCIoTi72aNWHo7epX4L
-
-// Community version:
-// https://codingtrain.github.io/ColorClassifer-TensorFlow.js
-// https://github.com/CodingTrain/ColorClassifer-TensorFlow.js
-
 let data;
 let model;
 let xs, ys;
