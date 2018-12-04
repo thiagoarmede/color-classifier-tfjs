@@ -1,14 +1,3 @@
-// Daniel Shiffman
-// Intelligence and Learning
-// The Coding Train
-
-// Full tutorial playlist:
-// https://www.youtube.com/playlist?list=PLRqwX-V7Uu6bmMRCIoTi72aNWHo7epX4L
-
-// Community version:
-// https://codingtrain.github.io/ColorClassifer-TensorFlow.js
-// https://github.com/CodingTrain/ColorClassifer-TensorFlow.js
-
 let data;
 let model;
 let xs, ys;
@@ -61,7 +50,6 @@ async function loadMd() {
     const optimizer = tf.train.sgd(LEARNING_RATE);
     let item = Number(localStorage.getItem("saveNo"));
     model.compile({
-      model = await tf.loadModel(`indexeddb://colorClassifier-${item}`);
       optimizer: optimizer,
       loss: "categoricalCrossentropy",
       metrics: ["accuracy"]
@@ -85,7 +73,6 @@ async function saveModel() {
 }
 
 function setup() {
-  // Crude interface
   canvas = createCanvas(200, 200);
   graph = document.getElementById("graph");
   labelP = select("#prediction");
@@ -113,11 +100,9 @@ function setup() {
   labelsTensor.dispose();
 
   model = buildModel();
-  //Methods for loading and saving the color classifier
   saveBtn.mouseClicked(saveModel);
   loadBtn.mouseClicked(loadMd);
 
-  // Method for training the model
   istraining = false;
   trainBtn.mouseClicked(train);
 }
@@ -177,30 +162,6 @@ function buildModel() {
   return md;
 }
 
-function plotTraining() {
-  let layout = {
-    width: 600,
-    height: 300,
-    title: "Gráfico de aprendizado",
-    xaxis: {
-      title: "Número de épocas"
-    }
-  };
-
-  let loss = {
-    x: lossX,
-    y: lossY,
-    name: "Val Loss"
-  };
-
-  let acc = {
-    x: lossX,
-    y: accY,
-    name: "Val Accuracy"
-  };
-
-  Plotly.newPlot(graph, [loss, acc], layout);
-}
 function draw() {
   let r = rSlider.value();
   let g = gSlider.value();
