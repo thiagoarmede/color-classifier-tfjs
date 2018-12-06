@@ -1,18 +1,18 @@
-let data;
+let dados;
 let model;
 let xs, ys;
 let rSlider, gSlider, bSlider;
 let labelP;
 let lossP;
 let canvas;
-let graph;
-let saveBtn, loadBtn, trainBtn;
-let lossX = [];
-let lossY = [];
+let grafico;
+let btnSalvar, btnCarregar, btnTreinar;
+let perdaX = [];
+let perdaY = [];
 let accY = [];
-let istraining;
+let treinando;
 
-let labelList = [
+let listaLabels = [
   "red-ish",
   "green-ish",
   "blue-ish",
@@ -24,7 +24,7 @@ let labelList = [
   "grey-ish"
 ];
 
-function parseToPortuguese(key) {
+function parsePt(key) {
   const translator = {
     "red-ish": "Tom de vermelho",
     "green-ish": "Tom de verde",
@@ -41,7 +41,7 @@ function parseToPortuguese(key) {
 }
 
 function preload() {
-  data = loadJSON("./colorData.json");
+  dados = loadJSON("./colorData.json");
 }
 
 async function loadMd() {
@@ -56,7 +56,6 @@ async function loadMd() {
     });
     console.log("Modelo carregado");
   } else {
-    Perda: 0.97847;
     alert("No previous models saved!");
   }
 }
@@ -74,63 +73,67 @@ async function saveModel() {
 
 function setup() {
   canvas = createCanvas(200, 200);
-  graph = document.getElementById("graph");
+  grafico = document.getElementById("graph");
   labelP = select("#prediction");
   lossP = select("#loss");
   rSlider = select("#red-slider");
   gSlider = select("#green-slider");
   bSlider = select("#blue-slider");
-  saveBtn = select("#save");
-  loadBtn = select("#load");
-  trainBtn = select("#train");
+  btnSalvar = select("#save");
+  btnCarregar = select("#load");
+  btnTreinar = select("#train");
 
   canvas.parent("rgb-Canvas");
-  let colors = [];
+  let cores = [];
   let labels = [];
-  for (let record of data.entries) {
+  for (let record of dados.entries) {
     let col = [record.r / 255, record.g / 255, record.b / 255];
-    colors.push(col);
-    labels.push(labelList.indexOf(record.label));
+    cores.push(col);
+    labels.push(listaLabels.indexOf(record.label));
   }
 
-  xs = tf.tensor2d(colors);
-  let labelsTensor = tf.tensor1d(labels, "int32");
+  xs = tf.tensor2d(cores);
+  let tensorNomes = tf.tensor1d(labels, "int32");
 
-  ys = tf.oneHot(labelsTensor, 9).cast("float32");
-  labelsTensor.dispose();
+  ys = tf.oneHot(tensorNomes, 9).cast("float32");
+  tensorNomes.dispose();
 
   model = buildModel();
-  //Methods for loading and saving the color classifier
-  saveBtn.mouseClicked(saveModel);
-  loadBtn.mouseClicked(loadMd);
+  btnSalvar.mouseClicked(saveModel);
+  btnCarregar.mouseClicked(loadMd);
 
-  // Method for training the model
-  istraining = false;
-  trainBtn.mouseClicked(train);
+  treinando = false;
+  btnTreinar.mouseClicked(train);
 }
 
 async function train() {
-  if (istraining) {
+  if (treinando) {
     return;
   }
-  istraining = true;
+  treinando = true;
+  alert("Treinamento iniciado!");
   await model.fit(xs, ys, {
     shuffle: true,
     validationSplit: 0.1,
-    epochs: 10,
+    epochs: 12,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
         console.log("Época finalizada");
-        lossY.push(logs.val_loss.toFixed(2));
+        const trainingDiv = document.getElementById("training");
+        trainingDiv.innerHTML += `<h5 style="margin-bottom: 4px;">Época Finalizada!</h5>`;
+        perdaY.push(logs.val_loss.toFixed(2));
         accY.push(logs.val_acc.toFixed(2));
-        lossX.push(lossX.length + 1);
+        perdaX.push(perdaX.length + 1);
         lossP.html("Perda: " + logs.loss.toFixed(5));
       },
       onBatchEnd: async (batch, logs) => {
+        console.log("bloco finalizado");
         await tf.nextFrame();
       },
       onTrainEnd: () => {
-        istraining = false;
+        treinando = false;
+        const trainingDiv  = document.getElementById("training");
+        trainingDiv.innerHTML += `<h3 style="color: green">Treinamento Finalizado!</h3>`;
         console.log("Treinamento finalizado");
       }
     }
@@ -153,8 +156,8 @@ function buildModel() {
   md.add(hidden);
   md.add(output);
 
-  const LEARNING_RATE = 0.25;
-  const optimizer = tf.train.sgd(LEARNING_RATE);
+  const TAXA_APRENDIZADO = 0.25;
+  const optimizer = tf.train.sgd(TAXA_APRENDIZADO);
 
   md.compile({
     optimizer,
@@ -166,17 +169,28 @@ function buildModel() {
 }
 
 function plotTraining() {
-  let loss = {
-    x: lossX,
-    y: lossY,
-    name: "Perda"
+  let layout = {
+    width: 600,
+    height: 300,
+    title: 'Gráfico de progresso',
+    xaxis: {
+      title: 'N. de Épocas'
+    }
   };
 
-  let acc = {
-    x: lossX,
+  let prec = {
+    x: perdaX,
     y: accY,
     name: "Precisão"
   };
+
+  let perda = {
+    x: perdaX,
+    y: perdaY,
+    name: 'Perda'
+  };
+
+  // Plotly.plot(graph, [perda, prec], layout);
 }
 
 function draw() {
@@ -190,8 +204,8 @@ function draw() {
     let results = model.predict(input);
     let argMax = results.argMax(1);
     let index = argMax.dataSync()[0];
-    let label = labelList[index];
-    const final = parseToPortuguese(label);
+    let label = listaLabels[index];
+    const final = parsePt(label);
     labelP.html("Cor: " + final);
   });
 

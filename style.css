@@ -1,10 +1,23 @@
 body {
   height: 90vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #f9f9f9;
   font-family: "Montserrat", sans-serif;
+}
+
+.navbar {
+  height: 150px;
+  width: 100%;
+  background-color: lightgray;
+  color: black;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 code {
