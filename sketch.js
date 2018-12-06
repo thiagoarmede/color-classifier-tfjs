@@ -114,7 +114,7 @@ async function train() {
   alert("Treinamento iniciado!");
   await model.fit(xs, ys, {
     shuffle: true,
-    validationSplit: 0.1,
+    validationSplit: 0.05,
     epochs: 12,
     callbacks: {
       onEpochEnd: (epoch, logs) => {
